@@ -42,6 +42,7 @@ def pandas_build_report(records):
     level_counts = {"ERROR": 0, "WARN": 0, "INFO": 0}
     user_logs = {}
 
+    # next ill vectirise the computation in both these loops should get the time down considerable all the fixes in implemened loop for all user logs and was still 'vectorised pandas build took 0.456082 seconds to complete'
     for r in records:
         report += f"[{r['level']}] {r['user']}: {r['message']}\n"
         level_counts[r["level"]] += 1
@@ -54,8 +55,6 @@ def pandas_build_report(records):
     for user, text in user_logs.items():
         words = text.split()
         wordser = pd.Series(words)
-        # vectorised pandas build took 0.515876 seconds to complete.
-        # original build took 3.819937 seconds to complete.
         counts = wordser.value_counts().to_dict()
         user_word_counts[user] = counts
     e = time.perf_counter() 
@@ -94,7 +93,7 @@ if __name__ == "__main__":
     records = generate_records(n=20000)
     
     report, level_counts, user_word_counts = pandas_build_report(records)
-    report, level_counts, user_word_counts = og_build_report(records)
+    # report, level_counts, user_word_counts = og_build_report(records)
 
 
 # solution 
