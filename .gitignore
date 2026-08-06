@@ -2,3 +2,5 @@
 rs
 # ignore the virtual enviroments
 .venv
+# ignore the profile.prof
+profile.prof
