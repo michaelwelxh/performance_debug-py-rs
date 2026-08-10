@@ -1,0 +1,4 @@
+py-spy
+numpy
+polars
+pandas

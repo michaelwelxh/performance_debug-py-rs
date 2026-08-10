@@ -4,3 +4,6 @@ rs
 .venv
 # ignore the profile.prof
 profile.prof
+
+#py-spy flame graph svg
+profile.svg
