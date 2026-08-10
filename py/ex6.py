@@ -13,6 +13,7 @@ TASK:
 import random
 import time 
 import pandas as pd
+import polars as pl
 
 
 
@@ -27,7 +28,7 @@ def generate_records(n=20000):
             "message": " ".join(random.choice(
                 ["error", "warning", "info", "timeout", "retry", "success"]
             ) for _ in range(20)),
-            "level": random.choice(["ERROR", "WARN", "INFO"]),
+            "level": random.choice(["ERROR", "WARN", "INFO"])
         })
     e = time.perf_counter()
     print(f"generation took {e-s:.6f} seconds to complete.")  
@@ -42,7 +43,6 @@ def pandas_build_report(records):
     level_counts = {"ERROR": 0, "WARN": 0, "INFO": 0}
     user_logs = {}
 
-    # next ill vectirise the computation in both these loops should get the time down considerable all the fixes in implemened loop for all user logs and was still 'vectorised pandas build took 0.456082 seconds to complete'
     for r in records:
         report += f"[{r['level']}] {r['user']}: {r['message']}\n"
         level_counts[r["level"]] += 1
@@ -59,6 +59,40 @@ def pandas_build_report(records):
         user_word_counts[user] = counts
     e = time.perf_counter() 
     print(f"vectorised pandas build took {e-s:.6f} seconds to complete.")  
+
+    return report, level_counts, user_word_counts
+
+def pol(records):
+    # vectorising the whole loop seem tedious so ill just try polars -> it worked
+    """Builds a summary: per-user message log as a single string, plus level counts."""
+    s = time.perf_counter() 
+    report = ""
+    level_counts = {"ERROR": 0, "WARN": 0, "INFO": 0}
+    user_logs = {}
+
+    for r in records:
+        report += f"[{r['level']}] {r['user']}: {r['message']}\n"
+        level_counts[r["level"]] += 1
+
+        if r["user"] not in user_logs:
+            user_logs[r["user"]] = ""
+        user_logs[r["user"]] += r["message"] + " "
+
+    user_word_counts = {}
+    for user, text in user_logs.items():
+        words = text.split()
+        wordser = pl.Series("words", words)
+        counts = dict(
+            zip(
+                wordser.value_counts()["words"],
+                wordser.value_counts()["count"]
+            )
+        )
+        user_word_counts[user] = counts
+    e = time.perf_counter() 
+    print(f"polars build took {e-s:.6f} seconds to complete.")  
+
+    # the bulk of the time is on random now in the gen records -> could shave off another 25% of the generation function and the remaining loops but will just move on
 
     return report, level_counts, user_word_counts
 
@@ -92,7 +126,8 @@ def og_build_report(records):
 if __name__ == "__main__":
     records = generate_records(n=20000)
     
-    report, level_counts, user_word_counts = pandas_build_report(records)
+    # report, level_counts, user_word_counts = pandas_build_report(records)
+    report, level_counts, user_word_counts = pol(records)
     # report, level_counts, user_word_counts = og_build_report(records)
 
 
