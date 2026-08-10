@@ -5,5 +5,5 @@ rs
 # ignore the profile.prof
 profile.prof
 
-#py-spy flame graph svg
-profile.svg
+#py-spy flame graph svg -fix
+*.svg
