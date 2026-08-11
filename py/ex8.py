@@ -5,7 +5,7 @@ TASK:
 
   1. Predict the asymptotic difference (Big-O) between concat_loop and
      concat_join before running anything. ---->  after some light searching join is a cPython method so should he highly optimised and potentially faster then the manual python 
-     implementation but to answer the question both are likley O(N) and join is likely faster excluding the function call time -  theres also the consideration of my byte code being executed in the first version - but im unsure on this 
+     implementation but to answer the question both are likley O(N) and join is likely faster excluding the function call time -  theres also the consideration of more byte code being executed in the first version - but im unsure on this 
   2. Verify with cProfile or timeit yourself.
   3. Explain WHY the difference exists at the level of what CPython is doing
      with string immutability and memory allocation. not just "join is faster".
