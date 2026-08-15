@@ -10,6 +10,10 @@ TASK:
   3. Explain WHY the difference exists at the level of what CPython is doing
      with string immutability and memory allocation. not just "join is faster".
 """
+# 3
+#        result += p     line 24
+# this is ultimaly calling str.__add__  envery string must ssepratly call the functioan and allocate a return a 
+# value to use in the next 'x.__add__(sep).__add__(y).__add__(sep).__add__(z)'  compared to join haveing one key function call 
 
 import time
 
@@ -17,7 +21,7 @@ import time
 def concat_loop(pieces):
     result = ""
     for p in pieces:
-        result += p
+        result += p    
     
     return result
 
