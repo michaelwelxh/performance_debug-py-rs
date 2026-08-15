@@ -1,5 +1,6 @@
-# ignore the rust project 
-rs
+# ignore first rust ex 
+rs/ex1/
+
 # ignore the virtual enviroments
 .venv
 # ignore the profile.prof
@@ -7,3 +8,7 @@ profile.prof
 
 #py-spy flame graph svg -fix
 *.svg
+
+# rust
+/target
+*.lock
