@@ -14,4 +14,4 @@ profile.prof
 *.lock
 
 # vs code 
-.vscode
+/.vscode
