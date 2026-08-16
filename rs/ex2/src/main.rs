@@ -5,39 +5,37 @@
 // -> need to set up rust on pc  ->>>>> MSVC build tools do tommorow
 
 
-use tokio::task;
+use tokio::time::{sleep, Duration};
+use reqwest;
+
+
+async fn fetch(url: &str) -> Result<String, reqwest::Error> {
+    // responce
+    let responce =  
+    // body 
+    let body = 
+    
+    Ok(body)
+}
 
 // define the attribute tag 
 #[tokio::main]
 // making sure to mark the function as async
-
-async fn main() {
-
+async fn main() -> Result<(), reqwest::Error> {
     //  spawn 3 conmcurrnet tasks
-    let task1 = tokio::spawn(async {endpoint1(5);});
-    let task2 = tokio::spawn(async {endpoint1(5);});
-    let task3 = tokio::spawn(async {endpoint1(5);});
+    let task1 = tokio::spawn(fetch("https://example.com"));
+    let task1 = tokio::spawn(fetch("https://example.org"));
+    let task1 = tokio::spawn(fetch("https://example.net"));
 
     // await the task finnifng 
     let (res1, res2, res3) = tokio::try_join!(task1, task2, task3).unwrap();
 
-    // sum 
-    let total = res1 + res2 + res3;
-    println!("The value of total is: {total}");
+    println!("1: {} bytes", res1??.len());
+    println!("2: {} bytes", res2??.len());
+    println!("3: {} bytes", res1??.len());
 
-}
-
-fn endpoint1(x: i32) -> i32 {
-    x*2
-    println!("The value of x is: {x}");
-}
-fn endpoint2(x: i32) -> i32 {
-    x+3
-    println!("The value of x is: {x}");
-}
-fn endpoint_sub(x: i32) -> i32 {
-    x-1
-    println!("The value of x is: {x}");
+    Ok(())
 }
 
 
+// call main 
