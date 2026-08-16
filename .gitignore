@@ -12,3 +12,6 @@ profile.prof
 # rust
 /target
 *.lock
+
+# vs code 
+.vscode
