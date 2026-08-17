@@ -15,3 +15,9 @@ profile.prof
 
 # vs code 
 /.vscode
+/.vs
+
+/cpp/ex1/out/
+/cpp/ex1/.vs
+/cpp/ex1/include
+*.json
