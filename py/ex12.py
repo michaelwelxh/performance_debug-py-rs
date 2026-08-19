@@ -12,33 +12,37 @@ TASK:
     3. Then time them for real and see if your prediction held.
 """
 
+#every add is a function call so likely not fast  -> x.__add__(sep).__add__(y).__add__(sep).__add__(z) -> 
+
 import time 
 
+#3 -> slower then sum_with_iadd as it need to load total twice 
 def sum_with_plus(n):
     total = 0
     for i in range(n):
         total = total + i
     return total
 
-
-def sum_with_iadd(n):
+# 2
+def sum_with_iadd(n):    
     total = 0
     for i in range(n):
         total += i
     return total
 
-
+# 1 function calls here vs N+1 in the above two and no aditional space needed
 def sum_builtin(n):
     return sum(range(n))
 
 
+#4 .value called n times, add called n times and range called onese so slowest so far  
 def lookup_attr_in_loop(obj, n):
     total = 0
     for _ in range(n):
         total += obj.value
     return total
 
-
+# obj.value is additional cost , add called n times  with 1 range call so slower then 2 and 3 unless im missing something
 def lookup_attr_cached(obj, n):
     val = obj.value
     total = 0
